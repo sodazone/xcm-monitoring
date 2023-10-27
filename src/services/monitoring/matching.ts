@@ -130,7 +130,7 @@ export class MatchingEngine {
           const outMsg = await this.#outbound.get(hashKey);
           log.info(
             '[%s:in] MATCHED hash=%s',
-            outMsg.chainId,
+            inMsg.chainId,
             hashKey
           );
           await this.#outbound.del(hashKey);
@@ -156,7 +156,7 @@ export class MatchingEngine {
           ]);
           log.info(
             '[%s:in] MATCHED hash=%s id=%s',
-            outMsg.chainId,
+            inMsg.chainId,
             hashKey,
             idKey
           );
