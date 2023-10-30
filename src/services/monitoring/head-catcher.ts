@@ -414,7 +414,7 @@ export class HeadCatcher extends EventEmitter {
       const targetHeight = max(newHeadNum - MAX_BLOCK_DIST, currentHeight);
 
       this.#log.info(
-        '[%s] CATCHING UP from #%s to #%s (d=%s)',
+        '[%s] CATCHING UP from #%s to #%s (trunc=%s)',
         chainId,
         targetHeight,
         newHeadNum,
@@ -425,7 +425,7 @@ export class HeadCatcher extends EventEmitter {
 
       const delay = this.#config.networks.find(
         n => n.id === parseInt(chainId)
-      )?.throttle ?? 500;
+      )?.throttle ?? 1000;
 
       while (parentHead.number.toBigInt() - targetHeight > 1) {
         try {
