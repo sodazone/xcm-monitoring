@@ -21,16 +21,15 @@ TODO
 [x] Throttle config
 [] General review, adjust logging etc.
 [] docs (e.g. unique paths logic)
-[] Handle modifications in network configuration (?)
 
 TO TEST
 ===
 [] Handle smoldot panics
 [x] Running with RPCs
-[] DMP (smoldot)
+[x] DMP (smoldot)
 [] UMP (smoldot)
 [x] batched transfers
-[] Handle subscription exploding on network config change
+[x] Handle subscription exploding on network config change
 
 FUTURE
 ===
