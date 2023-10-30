@@ -5,7 +5,7 @@ TODO
 [x] Processing logic on finalized blocks, retrieve from database (Smoldot best block peers problem)
 [x] Continuous catch-up on finalized blocks stream, Smoldot skips finalized numbers (why?)
 [x] Start up catch-up from finalized head in background, one-shot only on start, pass it to finalezed block processing logic
-[x] Resilient catch-up logic, cases (1) stops catch-up in the middle (2) getBlock fails, retries (max retries and alert of unrecoverable gap?)
+[x] Resilient catch-up logic, cases (1) stops catch-up in the middle (2) getBlock fails, retries
 [x] Update subscriptions (API + logic)
 [x] Allow updating control queries for senders and destinations
 [x] Consider subscribe to new heads only on subscription, or a good strategy to clear DB (??)
@@ -19,8 +19,10 @@ TODO
 [x] Complete unique key deletions
 [x] Test coverage
 [x] Throttle config
+[x] Admin APIs
 [] General review, adjust logging etc.
 [] docs (e.g. unique paths logic)
+[] publish Docker image
 
 TO TEST
 ===
