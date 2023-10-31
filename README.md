@@ -65,16 +65,16 @@ TBD
 Install and build:
 
 ```shell
-➜ npm i
-
-➜ npm run build
+npm i && npm run build
 ```
 
 Run:
 
 ```shell
-➜ npx xcm-mon --help
+npx xcm-mon --help
+```
 
+```shell
 Usage: xcm-mon [options]
 
 XCM Monitoring Server
@@ -97,7 +97,7 @@ Options:
 Uses nodemon to automatically restart the application on file changes.
 
 ```shell
-➜ npm run dev
+npm run dev
 ```
 
 ## Web APIs
@@ -125,7 +125,7 @@ The server exposes a healthchek endpoint at
 
 To run unit tests:
 
-```
+```shell
 npm run test
 ```
 
