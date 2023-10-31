@@ -6,7 +6,7 @@ This guide provides instructions for testing the XCM Monitoring Service on both 
 
 ### Setup Zombienet
 
-We have a separate project repository [XCM Testing Tools](https://github.com/sodazone/xcm-testing-tools) to help ease the set up of a Zombienet ready for cross-chain asset transfers.
+We have a separate project repository called [XCM Testing Tools](https://github.com/sodazone/xcm-testing-tools) to assist with setting up a Zombienet ready for cross-chain asset transfers.
 
 1. Clone the testing repo and navigate to its directory:
 
@@ -18,7 +18,7 @@ We have a separate project repository [XCM Testing Tools](https://github.com/sod
 
 2. Follow the instruction in the project README to set up Zombienet and assets.
 
-### Set up XCM Monitoring Server
+### Run XCM Monitoring Server
 
 #### Running with NPM
 
@@ -38,9 +38,12 @@ We have a separate project repository [XCM Testing Tools](https://github.com/sod
 > npm run build
 ```
 
-3. Set up the configuration file for your network in `<root>/config/`. Ensure that the parameters correspond to those used to set up Zombienet. If you are planning to test with light clients, copy the chain specs for your chains from the temp folder spawned by Zombienet into `<project-root>/chain-specs/`.
+3. Create the configuration file for your network in `<root>/config/`. Ensure that the parameters correspond to those used to set up Zombienet. If you are planning to test with light clients, copy the chain specs for your chains from the temporary folder spawned by Zombienet into `<project-root>/chain-specs/`.
 
-4. Run the XCM Monitoring Service
+> [!IMPORTANT]
+> If any parachain is configured to use smoldot, the relay chain will also need to be configured with smoldot, as the smoldot client requires access to the relay chain to check for para-block inclusion and finality.
+
+4. Run the server
 
 ```shell
 npm run start -- -c ./config/<YOUR_CONFIG>.toml
@@ -60,13 +63,14 @@ TBD
 TBD
 ```
 
-If you're running with light clients, you will need to wait until warp sync is finished before you start receiving new or finalized blocks.
+> [!NOTE] 
+> If you're using light clients, you will only start receiving new or finalized blocks when warp sync is finished.
 
 ### Add Subscriptions
 
 Use the subscription API to subscribe to cross-chain messages.
 
-Example subscribe to cross-chain messages from parachain 1000 to either relaychain or parachain 2000, sent from `//Alice` or `//Bob` account. In this case we set the notification type to `log` to see the notification in the console only:
+Below is an example request to subscribe to cross-chain messages between parachain 1000 and either relay chain or parachain 2000, sent from `//Alice` or `//Bob` account. The notification type is set to `log` to view notifications in the console:
 
 ```shell
 curl --location 'http://127.0.0.1:3000/subs' \
@@ -82,13 +86,11 @@ curl --location 'http://127.0.0.1:3000/subs' \
 }]'
 ```
 
-Alternatively, you can use the Postman collection available in the `examples/` directory to interface with the subscription API.
-
 ### Make an Asset Transfer
 
-Using the [scripts](https://github.com/sodazone/xcm-testing-tools#testing-asset-transfers) available in the `xcm-testing-tools` project, initiate a reserve-backed asset transfer using either Alice's or Bob's account.
+Utilize the [scripts](https://github.com/sodazone/xcm-testing-tools#testing-asset-transfers) in the `xcm-testing-tools` project to initiate a reserve-backed asset transfer using either Alice's or Bob's account.
 
-A while after the extrinsic is finalized, you should receive similar logs in the console to indicate a notification:
+After the extrinsic is finalized, you will receive similar logs in the console to indicate a notification:
 
 ```
 [12:07:07 UTC] INFO: [2000:in] STORED hash=0x20ad5ddb54c87125bbaf7e90329db6e5ffd577478b96d85034d2826b91c65fce:2000 (subId=asset-hub-transfers)
@@ -96,13 +98,16 @@ A while after the extrinsic is finalized, you should receive similar logs in the
 [12:07:07 UTC] INFO: [1000 ➜ 2000] NOTIFICATION subscription=asset-hub-transfers, messageHash=0x20ad5ddb54c87125bbaf7e90329db6e5ffd577478b96d85034d2826b91c65fce, outcome=Success (o: #217, d: #216)
 ```
 
-You will notice that in the case of the example, the message on the destination chain was captured first and this is not a problem since the XCM Monitoring Service supports matching of messages out-of-order.
+In this example, the message on the destination chain was captured first. This is not a problem since the XCM Monitoring Service supports matching messages out-of-order.
+
+> [!NOTE] 
+> Connecting with light clients may result in a slightly longer wait for finalized blocks compared to RPC connections. Consequently, you might notice a short delay in notifications when using light clients.
 
 ### Update the Notification Method
 
 The subscription API allows you to update your notification method. In this example, we will update the notification from type `log` to type `webhook`.
 
-Example JSON PATCH request:
+Example request:
 
 ```shell
 curl --location --request PATCH 'http://127.0.0.1:3000/subs/asset-hub-transfers' \
@@ -115,7 +120,7 @@ curl --location --request PATCH 'http://127.0.0.1:3000/subs/asset-hub-transfers'
 ]'
 ```
 
-Now if you make another transfer, the notification should be delivered to your endpoint with a message similar to the one below:
+Now, if you make another transfer, the notification should be delivered to your endpoint with a message similar to the one below:
 
 <details>
   <summary>JSON Notification</summary>
@@ -258,8 +263,9 @@ Now if you make another transfer, the notification should be delivered to your e
 
 ### Update Senders and Destinations
 
-Similarly, the list of senders and destinations can be updated via the subscription API with a JSON PATCH request. The monitor will dynamically update the matching criteria to reflect these changes. For example, we can
-remove Alice from, and add Ferdie to the list of senders to monitor with the following request:
+You can easily modify the list of senders and destinations through the subscription API using a JSON PATCH request. The monitor dynamically adjusts its matching criteria to incorporate these changes.
+
+For instance, to add Ferdie and remove Alice from the list of senders being monitored, use the following request:
 
 ```shell
 curl --location --request PATCH 'http://127.0.0.1:3000/subs/asset-hub-transfers' \
@@ -270,6 +276,28 @@ curl --location --request PATCH 'http://127.0.0.1:3000/subs/asset-hub-transfers'
 ]'
 ```
 
-Now, sending a transfer with Bob or Ferdie's account will result in a notification,  whereas sending a transfer with Alice's account will not trigger a notification.
+After making these changes, any cross-chain transfers from parachain 1000 initiated with Bob's or Ferdie's account will trigger a notification, while transfers from Alice's account will not prompt any notifications.
 
-## Testing With Live Network
+> [!NOTE]
+> Check the API documentation for full suite of actions available on the subscription API
+
+## Testing on Public Networks
+
+Testing on public networks follows a process similar to the steps outlined above, with the exception of not having to spin up a Zombienet. Simply create a configuration file in `<project-root>/config/` for the set of chains you wish to monitor and run the server using the following command:
+
+```shell
+npm run start -- -c ./config/<YOUR_CONFIG>.toml
+```
+
+OR
+
+```shell
+docker ...
+```
+
+We provide a sample configuration file `<project-root>/config/polkadot.toml` for Polkadot and parachains (Asset Hub, Acala, Astar, Moonbeam) that you can use or modify according to your requirements.
+
+Subscribe to cross-chain transfers as detailed in the section [Add Subscriptions](#add-subscriptions), and you will start receiving notifications when transfers occur.
+
+> [!IMPORTANT]
+> Connection to the network through light client only functions if there are bootnodes in the chain spec that listen on WebSocket.

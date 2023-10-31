@@ -1,6 +1,7 @@
 [[networks]]
 name = "polkadot"
 id = 0
+throttle = 1_000
 
   [networks.provider]
   type = "smoldot"
@@ -12,15 +13,35 @@ id = 1_000
 relay = "polkadot"
 
   [networks.provider]
+  type = "rpc"
+  url = "wss://polkadot-asset-hub-rpc.polkadot.io"
+
+[[networks]]
+name = "acala"
+id = 2_000
+relay = "polkadot"
+throttle = 1_000
+
+  [networks.provider]
   type = "smoldot"
-  spec = "./chain-specs/polkadot-asset-hub.json"
+  spec = "./chain-specs/polkadot-acala.json"
 
 [[networks]]
 name = "astar"
 id = 2_006
 relay = "polkadot"
+throttle = 1_000
 
   [networks.provider]
   type = "smoldot"
   spec = "./chain-specs/polkadot-astar.json"
+
+[[networks]]
+name = "moonbeam"
+id = 2_004
+relay = "polkadot"
+
+  [networks.provider]
+  type = "rpc"
+  url = "wss://wss.api.moonbeam.network"
 
