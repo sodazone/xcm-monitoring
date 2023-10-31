@@ -278,9 +278,6 @@ curl --location --request PATCH 'http://127.0.0.1:3000/subs/asset-hub-transfers'
 
 After making these changes, any cross-chain transfers from parachain 1000 initiated with Bob's or Ferdie's account will trigger a notification, while transfers from Alice's account will not prompt any notifications.
 
-> [!NOTE]
-> Check the API documentation for full suite of actions available on the subscription API
-
 ## Testing on Public Networks
 
 Testing on public networks follows a process similar to the steps outlined above, with the exception of not having to spin up a Zombienet. Simply create a configuration file in `<project-root>/config/` for the set of chains you wish to monitor and run the server using the following command:
@@ -298,6 +295,3 @@ docker ...
 We provide a sample configuration file `<project-root>/config/polkadot.toml` for Polkadot and parachains (Asset Hub, Acala, Astar, Moonbeam) that you can use or modify according to your requirements.
 
 Subscribe to cross-chain transfers as detailed in the section [Add Subscriptions](#add-subscriptions), and you will start receiving notifications when transfers occur.
-
-> [!IMPORTANT]
-> Connection to the network through light client only functions if there are bootnodes in the chain spec that listen on WebSocket.
