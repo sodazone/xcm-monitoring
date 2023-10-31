@@ -3,7 +3,7 @@
 The XCM Monitoring Server is a software application designed to monitor Cross-Consensus Message Format (XCM)
 program executions across consensus systems. Users can configure specific blockchain networks for observation and create subscriptions based on origin and destination chains, as well as sender addresses through a web API. The server delivers real-time notifications to the endpoints specified in the subscriptions, providing timely updates about relevant interactions.
 
-**Key Features**
+## Key Features
 
 - **Execution Monitoring:** The server tracks XCM program executions across various networks.
 - **Subscription Management:** The server offers a flexible subscription API for users to define specific criteria for notifications. Customizable parameters include origin, senders, destinations, and notification methods.
@@ -11,7 +11,11 @@ program executions across consensus systems. Users can configure specific blockc
 - **Light client support:** The server supports connecting to chains through smoldot, in addition to RPC endpoints, thereby reducing infrastructure needs by eliminating the necessity of running full nodes or relying on RPC providers.
 - **Resilience and Reliability:** The server ensures uninterrupted operation with persistent data storage between restarts. It supports graceful shutdowns, retries employing truncated exponential backoff, reliable webhook delivery, continuous block tip catch-up, and efficient caching for light clients.
 
-## Server Configuration
+The XCM Monitoring Server utilizes the [Ocelloids Monitoring SDK](https://github.com/sodazone/ocelloids) for the implementation of its monitoring logic.
+
+## Configuration
+
+### Server Configuration
 
 The server configuration uses the environment variables described in the table below.
 
@@ -28,7 +32,7 @@ The server configuration uses the environment variables described in the table b
 | XCMON_SECRET                  | Secret passphrase for administration.          | -         |
 | XCMON_MAX_BLOCK_DIST          | Maximum distance in blocks for the catch-up.   | 150       |
 
-## Network Configuration
+### Network Configuration
 
 To configure network connections, you need to provide a configuration file in TOML format. The accepted configuration fields are as follows:
 
