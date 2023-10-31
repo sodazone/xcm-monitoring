@@ -12,7 +12,6 @@ jest.unstable_mockModule('node:fs', () => {
         return _configToml;
       }
     },
-
   };
 });
 

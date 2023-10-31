@@ -1,6 +1,7 @@
+import { jsonEncoded, prefixes } from './services/types.js';
 import './testing/network.js';
 
-import { FastifyInstance } from 'fastify';
+import { FastifyInstance, InjectOptions } from 'fastify';
 
 const testSubContent = {
   id: 'macatron',
@@ -30,6 +31,7 @@ describe('monitoring server API', () => {
       host: 'localhost',
       port: 0
     });
+
     return server.ready();
   });
 
@@ -254,6 +256,179 @@ describe('monitoring server API', () => {
 
         done();
       });
+    });
+
+    it('should replace the notification method', done => {
+      server.inject({
+        method: 'PATCH',
+        url: '/subs/macatron',
+        body: [
+          {
+            op: 'replace',
+            path: '/notify',
+            value: {
+              type: 'webhook',
+              url: 'http://localhost:4444/path'
+            }
+          }
+        ]
+      }, (_err, response) => {
+        expect(response.statusCode)
+          .toStrictEqual(200);
+        expect(JSON.parse(response.body).notify.type)
+          .toEqual('webhook');
+
+        done();
+      });
+    });
+  });
+
+  describe('admin api', () => {
+    beforeAll(async () => {
+      const { storage: {root} } = server;
+
+      await root.sublevel<string, any>(prefixes.sched.tasks, jsonEncoded)
+        .batch()
+        .put('0000', {type: 'a', task: {}})
+        .put('0001', {type: 'b', task: {}})
+        .write();
+
+      await root.sublevel<string, any>(prefixes.cache.tips, jsonEncoded)
+        .batch()
+        .put('0', {})
+        .put('1', {})
+        .write();
+      for (let i = 0; i < 3; i++) {
+        await root.sublevel<string, any>(
+          prefixes.cache.family(i), jsonEncoded
+        ).put('0x0', {});
+      }
+    });
+    function adminRq(url: string, method = 'GET') {
+      return {
+        method,
+        url,
+        headers: {
+          authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.TUkHePbst2jnFffIGHbn-fFnZz36DfBjxsfptqFypaA'
+        }
+      } as InjectOptions;
+    }
+
+    it('should return unauthorized for invalid tokens', done => {
+      server.inject({
+        method: 'GET',
+        url: '/admin/sched',
+        headers: {
+          authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.VAxxu2QZ2pPsTFklm7IS1Qc7p0E6_FQoiibkDZc9cio'
+        }
+      }, (_err, response) => {
+        expect(response.statusCode)
+          .toStrictEqual(401);
+
+        done();
+      });
+    });
+
+    it('should query tips cache', done => {
+      server.inject(
+        adminRq('/admin/cache/tips')
+        , (_err, response) => {
+          expect(response.statusCode)
+            .toStrictEqual(200);
+          expect(JSON.parse(response.body).length).toBe(2);
+
+          done();
+        });
+    });
+
+    it('should clear tips cache', done => {
+      server.inject(
+        adminRq('/admin/cache/tips', 'DELETE')
+        , (_err, response) => {
+          expect(response.statusCode)
+            .toStrictEqual(200);
+
+          done();
+        });
+    });
+
+    it('should get cache data', done => {
+      server.inject(
+        adminRq('/admin/cache/0')
+        , (_err, response) => {
+          expect(response.statusCode)
+            .toStrictEqual(200);
+
+          done();
+        });
+    });
+
+    it('should delete cache data', done => {
+      server.inject(
+        adminRq('/admin/cache/1', 'DELETE')
+        , (_err, response) => {
+          expect(response.statusCode)
+            .toStrictEqual(200);
+
+          done();
+        });
+    });
+
+    it('should get pending messages', done => {
+      server.inject(
+        adminRq('/admin/xcm')
+        , (_err, response) => {
+          expect(response.statusCode)
+            .toStrictEqual(200);
+
+          done();
+        });
+    });
+
+    it('should get scheduled tasks', done => {
+      server.inject(
+        adminRq('/admin/sched')
+        , (_err, response) => {
+          expect(response.statusCode)
+            .toStrictEqual(200);
+          expect(JSON.parse(response.body).length).toBe(2);
+
+          done();
+        });
+    });
+
+    it('should get an scheduled task', done => {
+      server.inject(
+        adminRq('/admin/sched/0000')
+        , (_err, response) => {
+          expect(response.statusCode)
+            .toStrictEqual(200);
+
+          done();
+        });
+    });
+
+    it('should delete an scheduled task', done => {
+      server.inject(
+        adminRq('/admin/sched/0001', 'DELETE')
+        , (_err, response) => {
+          expect(response.statusCode)
+            .toStrictEqual(200);
+
+          done();
+        });
+    });
+
+    it('should get subscription uniques', done => {
+      server.inject(
+        adminRq('/admin/subs/paths'),
+        (_err, response) => {
+          expect(response.statusCode)
+            .toStrictEqual(200);
+          expect(JSON.parse(response.body).uniques.length).toBe(5);
+
+          done();
+        });
     });
   });
 });
