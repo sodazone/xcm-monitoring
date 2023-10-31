@@ -11,11 +11,66 @@ program executions across consensus systems. Users can configure specific blockc
 - **Light client support:** The server supports connecting to chains through smoldot, in addition to RPC endpoints, thereby reducing infrastructure needs by eliminating the necessity of running full nodes or relying on RPC providers.
 - **Resilience and Reliability:** The server ensures uninterrupted operation with persistent data storage between restarts. It supports graceful shutdowns, retries employing truncated exponential backoff, reliable webhook delivery, continuous block tip catch-up, and efficient caching for light clients.
 
-## Server
+## Server Configuration
 
-Running the server
+The server configuration uses the environment variables described in the table below.
 
+| Variable                      | Description                                    | Default   |
+| ----------------------------- | ---------------------------------------------- | --------- |
+| XCMON_HOST                    | The host to bind to.                           | localhost |
+| XCMON_PORT                    | The TCP port number to listen on.              | 3000      |
+| XCMON_CONFIG_FILE             | The service configuration file.                | -         |
+| XCMON_DB_DIR                  | The database directory.                        | ./db      |
+| XCMON_DB_SCHEDULER_ENABLE     | Enables or disables the task scheduler.        | true      |
+| XCMON_DB_SCHEDULER_FREQUENCY  | Milliseconds to wait before each tick.         | 5000      |
+| XCMON_DB_JANITOR_SWEEP_EXPIRY | Milliseconds before a task is swept.           | 1500000   |
+| XCMON_CLOSE_GRACE_DELAY       | Milliseconds for the graceful close to finish. | 500       |
+| XCMON_SECRET                  | Secret passphrase for administration.          | -         |
+| XCMON_MAX_BLOCK_DIST          | Maximum distance in blocks for the catch-up.   | 150       |
+
+## Network Configuration
+
+To configure network connections, you need to provide a configuration file in TOML format. The accepted configuration fields are as follows:
+
+| Field    | Description                                                                                        | Optional   |
+| ---------| -------------------------------------------------------------------------------------------------- | ---------- |
+| name     | The name of the network.                                                                           | No      |
+| id       | The ID of the network.                                                                             | No      |
+| relay    | For parachains, the name of the relay chain it connects to.                                        | Yes       |
+| throttle | The throttle interval, in milliseconds, for requesting historic headers during chain tip catch-up. | Yes       |
+| provider | Provider configuration, detailed below.                                                            | No      |
+
+Provider configuration fields:
+
+| Field    | Description                                         |
+| ---------| --------------------------------------------------- |
+| type     | Network type, either `rpc` or `smoldot`.            |
+| url      | WebSocket endpoint URL, applicable when type=`rpc`. |
+| spec     | Path to the chain specs, used when type=`smoldot`.  |
+
+Example configurations are available in the `config/` directory of this repository for reference.
+
+## Running the Server
+
+### Running with Docker
+
+TBD
+
+### Running with NPX
+
+Install and build:
+
+```shell
+➜ npm i
+
+➜ npm run build
 ```
+
+Run:
+
+```shell
+➜ npx xcm-mon --help
+
 Usage: xcm-mon [options]
 
 XCM Monitoring Server
@@ -33,25 +88,13 @@ Options:
   --help                                display help for command
 ```
 
-You can also use environment variables:
+### Running in Development Mode
 
-| Variable                      | Description                                    | Default   |
-| ----------------------------- | ---------------------------------------------- | --------- |
-| XCMON_HOST                    | The host to bind to.                           | localhost |
-| XCMON_PORT                    | The TCP port number to listen on.              | 3000      |
-| XCMON_CONFIG_FILE             | The service configuration file.                | -         |
-| XCMON_DB_DIR                  | The database directory.                        | ./db      |
-| XCMON_DB_SCHEDULER_ENABLE     | Enables or disables the task scheduler.        | true      |
-| XCMON_DB_SCHEDULER_FREQUENCY  | Milliseconds to wait before each tick.         | 5000      |
-| XCMON_DB_JANITOR_SWEEP_EXPIRY | Milliseconds before a task is swept.           | 1500000   |
-| XCMON_CLOSE_GRACE_DELAY       | Milliseconds for the graceful close to finish. | 500       |
-| XCMON_SECRET                  | Secret passphrase for administration.          | -         |
-| XCMON_MAX_BLOCK_DIST          | Maximum distance in blocks for the catch-up.   | 150       |
+Uses nodemon to automatically restart the application on file changes.
 
-## Network Configuration
-
-To configure network connections, provide a configuration file in TOML format.
-Example configurations are available in the `config/` directory of this repository.
+```shell
+➜ npm run dev
+```
 
 ## Web APIs
 
@@ -73,3 +116,13 @@ Additionally, it allows consultation of the current chain tip of a network.
 
 The server exposes a healthchek endpoint at
 [http://{{your_host}}/health](http://localhost:3000/health).
+
+## Testing
+
+To run unit tests:
+
+```
+npm run test
+```
+
+For end-to-end testing with either local networks or public networks, please refer to our [testing guide](https://github.com/sodazone/xcm-monitoring/blob/main/guides/TESTING.md)
