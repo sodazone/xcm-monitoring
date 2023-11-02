@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: multi-xcmon
+  IMAGE_NAME: xcmon-multi
 
 jobs:
   docker:
@@ -46,4 +46,4 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: $IMAGE_NAME $IMAGE_ID:$VERSION
+          tags: ${{ env.IMAGE_NAME }} ${{ env.IMAGE_ID }}:${{ env.VERSION }}
