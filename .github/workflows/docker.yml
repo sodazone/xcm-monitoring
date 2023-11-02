@@ -1,4 +1,4 @@
-name: Build XCM Monitoring Image
+name: Publish Docker Image
 
 on:
   workflow_dispatch:
