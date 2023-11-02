@@ -100,13 +100,15 @@ Uses nodemon to automatically restart the application on file changes.
 npm run dev
 ```
 
-## Web APIs
+## HTTP APIs
 
 Interact with the server using the exposed APIs.
 
 Explore the `guides/postman` directory for Postman collections.
 
 ## Subscription API
+
+This is the API used to create and manage subscriptions for the XCM interactions of your interest.
 
 You can find the OpenAPI documentation at
 [http://{{your_host}}/documentation](http://localhost:3000/documentation).
