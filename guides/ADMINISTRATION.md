@@ -25,7 +25,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.TUkHePbst2jnFffIG
 
 You can list the cached items, blocks, and messages by making a GET request to `/admin/cache/:numeric_chain_id`.
 You can clear a cache with a DELETE request to the same endpoint.
-The chain tips, i.e., the latest known block header, can be listed using `/admin/cache/tips` and can also be deleted.
+The chain tips, i.e. the latest known block header, can be listed using `/admin/cache/tips` and can also be deleted.
 
 ### Scheduler
 
