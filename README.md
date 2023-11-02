@@ -116,7 +116,7 @@ You can find the OpenAPI documentation at
 The server provides an API for administration, enabling reading and purging of cached data, pending XCM messages, and scheduled tasks.
 Additionally, it allows consultation of the current chain tip of a network.
 
-Please, check the (Administration Guide)[https://github.com/sodazone/xcm-monitoring/blob/main/guides/ADMINISTRATION.md] for further details.
+Please, check the [Administration Guide](https://github.com/sodazone/xcm-monitoring/blob/main/guides/ADMINISTRATION.md) for further details.
 
 ## Healthcheck
 
