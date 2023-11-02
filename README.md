@@ -18,6 +18,7 @@ The XCM Monitoring Server utilizes the [Ocelloids Monitoring SDK](https://github
 ### Server Configuration
 
 The server configuration uses the environment variables described in the table below.
+The configuration values can be overriden using command line arguments.
 
 | Variable                      | Description                                    | Default   |
 | ----------------------------- | ---------------------------------------------- | --------- |
