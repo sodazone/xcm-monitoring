@@ -1,4 +1,23 @@
-# XCM Monitoring Server
+<div align="center">
+<table>
+<tbody>
+<td align="center">
+
+      ██╗  ██╗ ██████╗███╗   ███╗ ██████╗ ███╗   ██╗  
+      ╚██╗██╔╝██╔════╝████╗ ████║██╔═══██╗████╗  ██║  
+       ╚███╔╝ ██║     ██╔████╔██║██║   ██║██╔██╗ ██║  
+       ██╔██╗ ██║     ██║╚██╔╝██║██║   ██║██║╚██╗██║  
+      ██╔╝ ██╗╚██████╗██║ ╚═╝ ██║╚██████╔╝██║ ╚████║  
+      ╚═╝  ╚═╝ ╚═════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝  ╚═══╝  
+                  XCM Monitoring Server               
+     ════════════════════════════════════════════════
+
+</td>
+</tbody>
+</table>
+</div>
+
+---
 
 The XCM Monitoring Server is a software application designed to monitor Cross-Consensus Message Format (XCM)
 program executions across consensus systems. Users can configure specific blockchain networks for observation and create subscriptions based on origin and destination chains, as well as sender addresses through a web API. The server delivers real-time notifications to the endpoints specified in the subscriptions, providing timely updates about relevant interactions.
