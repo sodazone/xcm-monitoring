@@ -9,7 +9,7 @@ program executions across consensus systems. Users can configure specific blockc
 - **Subscription Management:** The server offers a flexible subscription API for users to define specific criteria for notifications. Customizable parameters include origin, senders, destinations, and notification methods.
 - **Dynamic Subscription Updates:** The subscription API allows users to modify subscription parameters, such as list of senders and destinations. The monitor seamlessly updates its matching criteria in real-time, without need for restarts.
 - **Light client support:** The server supports connecting to chains through smoldot, in addition to RPC endpoints, thereby reducing infrastructure needs by eliminating the necessity of running full nodes or relying on RPC providers.
-- **Resilience and Reliability:** The server ensures uninterrupted operation with persistent data storage between restarts. It supports graceful shutdowns, retries employing truncated exponential backoff, reliable webhook delivery, continuous block tip catch-up, and efficient caching for light clients.
+- **Resilience and Reliability:** The server ensures uninterrupted operation with persistent data storage between restarts. It supports graceful shutdowns, retries employing truncated exponential backoff, reliable webhook delivery, continuous chain tip catch-up, and efficient caching for light clients.
 
 The XCM Monitoring Server utilizes the [Ocelloids Monitoring SDK](https://github.com/sodazone/ocelloids) for the implementation of its monitoring logic.
 
@@ -88,7 +88,7 @@ Options:
   --scheduler <boolean>                 enables or disables the task scheduler (default: true, env: XCMON_DB_SCHEDULER_ENABLE)
   --scheduler-frequency <milliseconds>  milliseconds to wait before each tick (default: 5000, env: XCMON_DB_SCHEDULER_FREQUENCY)
   --sweep-expiry <milliseconds>         milliseconds before a task is swept (default: 1500000, env: XCMON_DB_JANITOR_SWEEP_EXPIRY)
-  -g, --grace                           milliseconds for the graceful close to finish (env: XCMON_CLOSE_GRACE_DELAY)
+  -g, --grace <milliseconds>            milliseconds for the graceful close to finish (env: XCMON_CLOSE_GRACE_DELAY)
   --help                                display help for command
 ```
 
