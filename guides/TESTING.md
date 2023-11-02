@@ -11,9 +11,11 @@ We have a separate project repository called [XCM Testing Tools](https://github.
 1. Clone the testing repo and navigate to its directory:
 
 ```
-> git clone https://github.com/sodazone/xcm-testing-tools.git
+git clone https://github.com/sodazone/xcm-testing-tools.git
+```
 
-> cd xcm-testing-tools/
+```
+cd xcm-testing-tools/
 ```
 
 2. Follow the instruction in the project README to set up Zombienet and assets.
@@ -25,17 +27,17 @@ We have a separate project repository called [XCM Testing Tools](https://github.
 1. In a separate terminal, clone the XCM Monitoring Server project.
 
 ```
-> git clone https://github.com/sodazone/xcm-monitoring.git
+git clone https://github.com/sodazone/xcm-monitoring.git
+```
 
-> cd xcm-monitoring
+```
+cd xcm-monitoring
 ```
 
 2. Install and build the project
 
 ```
-> npm install
-
-> npm run build
+npm i && npm run build
 ```
 
 3. Create the configuration file for your network in `<root>/config/`. Ensure that the parameters correspond to those used to set up Zombienet. If you are planning to test with light clients, copy the chain specs for your chains from the temporary folder spawned by Zombienet into `<project-root>/chain-specs/`.
@@ -53,14 +55,27 @@ npm run start -- -c ./config/<YOUR_CONFIG>.toml
 
 1. Download the Docker image.
 
-```shell
+```
 TBD
 ```
 
+Or build locally.
+ 
+```
+docker build . -t xcm-monitor:develop
+```
+
 2. Run.
-3. 
-```shell
-TBD
+
+Example running the local image with pre-packaged Polkadot network configuration.
+```
+docker run --name xcm-mon -e XCMON_CONFIG_FILE=./config/polkadot.toml -p 3000:3000 xcm-monitor:develop
+```
+
+To add your custom configuration, mount the configuration and chain specs as volumes:
+
+```
+docker run --name xcm-mon -e XCMON_CONFIG_FILE=./config/<YOUR_CONFIG>.toml -p 3000:3000 -v <PATH_TO_CHAIN_SPECS>:/opt/xcmon/chain-specs -v <PATH_TO_CONFIG>:/opt/xcmon/config xcm-monitor:develop
 ```
 
 > [!NOTE] 
