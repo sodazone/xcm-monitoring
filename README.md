@@ -29,7 +29,7 @@ The server configuration uses the environment variables described in the table b
 | XCMON_DB_SCHEDULER_FREQUENCY  | Milliseconds to wait before each tick.         | 5000      |
 | XCMON_DB_JANITOR_SWEEP_EXPIRY | Milliseconds before a task is swept.           | 1500000   |
 | XCMON_CLOSE_GRACE_DELAY       | Milliseconds for the graceful close to finish. | 500       |
-| XCMON_SECRET                  | Secret passphrase for administration.          | -         |
+| XCMON_SECRET                  | Secret passphrase for administration auth.     | -         |
 | XCMON_MAX_BLOCK_DIST          | Maximum distance in blocks for the catch-up.   | 150       |
 
 ### Network Configuration
@@ -115,6 +115,8 @@ You can find the OpenAPI documentation at
 
 The server provides an API for administration, enabling reading and purging of cached data, pending XCM messages, and scheduled tasks.
 Additionally, it allows consultation of the current chain tip of a network.
+
+Please, check the (Administration Guide)[https://github.com/sodazone/xcm-monitoring/blob/main/guides/ADMINISTRATION.md] for further details.
 
 ## Healthcheck
 
