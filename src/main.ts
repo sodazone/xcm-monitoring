@@ -105,7 +105,7 @@ program
     ).default(25 * 60000).argParser(positiveInt) // 25 minutes
   )
   .addOption(
-    optionOf('-g, --grace',
+    optionOf('-g, --grace <milliseconds>',
       'milliseconds for the graceful close to finish',
       'XCMON_CLOSE_GRACE_DELAY',
     ).default(700).argParser(positiveInt)
