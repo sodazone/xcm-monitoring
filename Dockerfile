@@ -1,6 +1,6 @@
 FROM node:20-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /opt/xcmon
 
 COPY package*.json tsconfig*.json ./
 COPY patches/ ./patches
@@ -13,7 +13,7 @@ COPY config/ ./config
 RUN npm run build
 
 ENV NODE_ENV=production
+ENV XCMON_HOST=0.0.0.0
 EXPOSE 3000
 
 CMD node dist/main.js
-
