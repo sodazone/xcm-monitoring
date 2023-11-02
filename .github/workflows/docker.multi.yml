@@ -47,4 +47,4 @@ jobs:
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ env.IMAGE_NAME }} ${{ env.IMAGE_ID }}:${{ env.VERSION }}
+          tags: ${{ env.IMAGE_ID }}:${{ env.VERSION }}
