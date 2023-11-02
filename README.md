@@ -56,11 +56,11 @@ Example configurations are available in the `config/` directory of this reposito
 
 ## Running the Server
 
-### Running with Docker
+### Docker
 
 TBD
 
-### Running with NPX
+### Command Line
 
 Install and build:
 
@@ -92,7 +92,7 @@ Options:
   --help                                display help for command
 ```
 
-### Running in Development Mode
+### Development
 
 Uses nodemon to automatically restart the application on file changes.
 
