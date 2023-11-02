@@ -107,21 +107,21 @@ Interact with the server using the exposed APIs.
 
 Explore the `guides/postman` directory for Postman collections.
 
-## Subscription API
+### Subscription API
 
 This is the API used to create and manage subscriptions for the XCM interactions of your interest.
 
 You can find the OpenAPI documentation at
 [http://{{your_host}}/documentation](http://localhost:3000/documentation).
 
-## Administration API
+### Administration API
 
 The server provides an API for administration, enabling reading and purging of cached data, pending XCM messages, and scheduled tasks.
 Additionally, it allows consultation of the current chain tip of a network.
 
 Please, check the [Administration Guide](https://github.com/sodazone/xcm-monitoring/blob/main/guides/ADMINISTRATION.md) for further details.
 
-## Healthcheck
+### Healthcheck
 
 The server exposes a healthchek endpoint at
 [http://{{your_host}}/health](http://localhost:3000/health).
